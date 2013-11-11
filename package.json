@@ -3,5 +3,6 @@
 , "dependencies": 
 	{ "socket.io": "*"
 	, "express": "*"
+	, "jquery-browser": "*"
 	}
 }
