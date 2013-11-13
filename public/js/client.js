@@ -1,30 +1,24 @@
-var w = 256, h = 256;
+var w = null, h = null;
 
-var core = function() {
-  var arr = new Array(w);
+var coreMap;
 
-  for (var x = 0; x < w; x++) {
-    var column = new Array(h);
-
-    for (var y = 0; y < h; y++) {
-      column[y] = 0;
-    }
-
-    arr[x] = column;
-  }
-
-  return arr;
-}();
-
-function genColors() {
+function genCoreMap(core) {
   for (var x = 0; x < w; x++) {
     for (var y = 0; y < h; y++) {
       // var r = x, g = 0, b = y;
-      var r = Math.floor(Math.random() * 256), 
-          g = Math.floor(Math.random() * 256),
-          b = Math.floor(Math.random() * 256);
+      var insn = core[y * w + x];
 
-      core[x][y] = 'rgb(' + r + ',' + g + ',' + b + ')';
+      // var r = Math.floor(Math.random() * 256), 
+      //     g = Math.floor(Math.random() * 256),
+      //     b = Math.floor(Math.random() * 256);
+
+      // coreMap[x][y] = 'rgb(' + r + ',' + g + ',' + b + ')';
+
+      if (insn.owner != null) {
+        coreMap[x][y] = 'rgb(255, 0, 0)';
+      } else {
+        coreMap[x][y] = 'rgb(25, 25, 25)';
+      }
     }
   }
 }
@@ -41,14 +35,49 @@ function repaint() {
 
   for (var x = 0; x < w; x++) {
     for (var y = 0; y < h; y++) {
-      ctx.fillStyle = core[x][y];
+      ctx.fillStyle = coreMap[x][y];
       ctx.fillRect(x * (colW + 1), y * (rowH + 1), colW, rowH);
     }
   }
 }
 
+function setup(width, height) {
+  w = width;
+  h = height;
+
+  // calculate actual canvas width/height
+  var canvas = $('#canvas')[0];
+  var idealWidth = canvas.width;
+  // round tile width down to nearest pixel
+  var tileWidth = Math.floor(idealWidth / w);
+
+  var actualWidth = tileWidth * w;
+  // fix aspect ratio
+  var actualHeight = tileWidth * h;
+
+  // push computed dimensions back to canvas
+  canvas.width = actualWidth;
+  canvas.height = actualHeight;
+
+  coreMap = new Array(w);
+
+  for (var x = 0; x < w; x++) {
+    var column = new Array(h);
+
+    for (var y = 0; y < h; y++) {
+      column[y] = 0;
+    }
+
+    coreMap[x] = column;
+  }
+
+  socket.on('sync', function (data) {
+    genCoreMap(data.core);
+    repaint();
+  });
+}
+
 var socket = io.connect('http://localhost');
-socket.on('time', function (data) {
-  genColors();
-  repaint();
+socket.on('start', function (data) {
+  setup(data.width, data.height);
 });
