@@ -33,9 +33,9 @@ var warrior = require('./warrior'),
 	M = warrior.Modifier,
 	Mode = warrior.Mode;
 
-module.exports = [
+module.exports = warrior.Warrior([
 	Insn(Opcode.DAT, M.F, Mode.Immediate, 0, Mode.Immediate, 0),
 	Insn(Opcode.ADD, M.AB, Mode.Immediate, 4, Mode.Direct, -1),
 	Insn(Opcode.MOV, M.AB, Mode.Immediate, 0, Mode.BIndirect, -2),
 	Insn(Opcode.JMP, M.A, Mode.Direct, -2, Mode.Immediate, 0)
-];
+]);
