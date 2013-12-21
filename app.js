@@ -4,8 +4,8 @@ var express = require('express'),
     io = require('socket.io').listen(server),
     minify = require('express-minify');
 
-var mars = require('./core/mars')
-  , dwarf = require('./core/dwarf-test');
+var mars = require('./core/mars'),
+    dwarf = require('./core/dwarf-test');
 var warrior = require('./core/warrior');
 var Opcode = warrior.Opcode, Modifier = warrior.Modifier, Mode = warrior.Mode;
 
