@@ -1,8 +1,11 @@
-{ "name": "cors-war"
-, "version": "1.0.0"
-, "dependencies": 
-	{ "socket.io": "*"
-	, "express": "*"
-	, "jquery-browser": "*"
-	}
+{
+  "name": "cors-war",
+  "version": "1.0.0",
+  "dependencies": {
+    "socket.io": "~3.4.4",
+    "express": "~0.9.16",
+    "jquery-browser": "~1.10.2",
+    "bootstrap-browser": "~3.0.2",
+    "express-minify": "0.0.7"
+  }
 }
