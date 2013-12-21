@@ -356,6 +356,9 @@ function evalInsn(w, pc, core, m, readLimit, writeLimit) {
           break;
       }
 
+      // FIXME: jankety-ass ersatz owner assignment
+      core[((pc + wpb) % m)].owner = w;
+
       // queue up next insn
       nextPCs.push((pc + 1) % m);
       break;
